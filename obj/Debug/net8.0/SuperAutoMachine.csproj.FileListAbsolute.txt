@@ -1,0 +1,14 @@
+C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\bin\Debug\net8.0\SuperAutoMachine.exe
+C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\bin\Debug\net8.0\SuperAutoMachine.deps.json
+C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\bin\Debug\net8.0\SuperAutoMachine.runtimeconfig.json
+C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\bin\Debug\net8.0\SuperAutoMachine.dll
+C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\bin\Debug\net8.0\SuperAutoMachine.pdb
+C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\obj\Debug\net8.0\SuperAutoMachine.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\obj\Debug\net8.0\SuperAutoMachine.AssemblyInfoInputs.cache
+C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\obj\Debug\net8.0\SuperAutoMachine.AssemblyInfo.cs
+C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\obj\Debug\net8.0\SuperAutoMachine.csproj.CoreCompileInputs.cache
+C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\obj\Debug\net8.0\SuperAutoMachine.dll
+C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\obj\Debug\net8.0\refint\SuperAutoMachine.dll
+C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\obj\Debug\net8.0\SuperAutoMachine.pdb
+C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\obj\Debug\net8.0\SuperAutoMachine.genruntimeconfig.cache
+C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\obj\Debug\net8.0\ref\SuperAutoMachine.dll
