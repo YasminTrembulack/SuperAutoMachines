@@ -2,9 +2,9 @@ using System;
 
 namespace SuperAutoMachine;
 
-class MFuradeiraCordenada : Machine
+class MFuradeiraCoordenada : Machine
 {
-    public MFuradeiraCordenada(int attack, int life, int experience, int level)
+    public MFuradeiraCoordenada(int attack = 3, int life = 5, int experience = 1, int level = 1)
         : base(attack, life, experience, level)
     {
         Name =  "Furadeira de Coordenada";

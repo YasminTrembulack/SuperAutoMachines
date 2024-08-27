@@ -12,3 +12,4 @@ C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\obj\Debug\net8.0-windows\refint\
 C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\obj\Debug\net8.0-windows\SuperAutoMachine.pdb
 C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\obj\Debug\net8.0-windows\SuperAutoMachine.genruntimeconfig.cache
 C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\obj\Debug\net8.0-windows\ref\SuperAutoMachine.dll
+C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\obj\Debug\net8.0-windows\SuperAutoMachine.sourcelink.json

@@ -21,6 +21,7 @@ class Round
     {
         Coins = 10;
         Store = new List<Machine>(3);
+        Enemy = new List<Machine>(5);
     }
 
     public static void Purchase(int indexMachine)
