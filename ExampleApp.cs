@@ -12,34 +12,21 @@ public class ExampleApp : App
     bool refresh = false;
     int X = 0;
     DateTime time;
-
-    RectangleF[] reacts = new RectangleF[5];
-
+    RectangleF[] reacts_t = new RectangleF[5];
+    RectangleF[] reacts_e = new RectangleF[5];
     RectangleF[] reacts_s = new RectangleF[3];
-    RectangleF rect1 = RectangleF.Empty;
-    RectangleF rect2 = RectangleF.Empty;
-    RectangleF rect3 = RectangleF.Empty;
-    RectangleF rect4 = RectangleF.Empty;
-    RectangleF rect5 = RectangleF.Empty;
-    RectangleF rect6 = RectangleF.Empty;
-    RectangleF rect7 = RectangleF.Empty;
-    RectangleF rect8 = RectangleF.Empty;
-
-
     Game game = Game.CurrentGame;
     Round round = Round.CurrentRound;
 
     public ExampleApp()
     {
-        reacts[0] = rect1;
-        reacts[1] = rect2;
-        reacts[2] = rect3;
-        reacts[3] = rect4;
-        reacts[4] = rect5;
-
-        reacts_s[0] = rect6;
-        reacts_s[1] = rect7;
-        reacts_s[2] = rect8;
+        for (int i = 0; i < 5; i++)
+        {
+            reacts_e[i] = RectangleF.Empty;
+            reacts_t[i] = RectangleF.Empty;
+            if(i < 3)
+                reacts_s[i] = RectangleF.Empty;
+        }
     }
 
     public override void OnFrame(bool isDown, PointF cursor)
@@ -48,18 +35,67 @@ public class ExampleApp : App
         {
             for (int j = 0; j < round.Store.Count; j++)
             {
-                if (reacts[i].Contains(cursor) && reacts_s[j].Contains(cursor) && !isDown)
+                if (reacts_t[i].Contains(cursor) && reacts_s[j].Contains(cursor) && !isDown)
                 {
                     fundiu = true;
                     Round.Purchase(i);
                 }
             }
         }
-        
+
+        DrawnStatus();
+        DrawnGroup(reacts_t, game.Team, 5, new(100, 250));
 
 
-        
+        if (!fight)
+        {
+            refresh = DrawButton(new RectangleF(950, 700, 200, 100), "Atualizar Loja");
+            if(round.Store.Count == 0 || refresh)
+            {
+                if(round.Coins <= 0)
+                    DrawText("Saldo Insuficiente!", Color.Red, new RectangleF(400, 700, 300, 100), 20f);
+                else if((DateTime.Now - time).TotalMilliseconds > 500 )
+                {
+                    Round.AddStore(RandomMachine.GetMachines(3, [70, 50, 40, 30, 20, 10]));
+                    time = DateTime.Now;
+                    round.Coins--;
+                }
+            }
+            
+            DrawnGroup(reacts_s, round.Store, 3, new(100, 700));
 
+            button = DrawButton(new RectangleF(700, 700, 200, 100), "Lutar!");
+        }
+        else if (fight)
+        {
+            if(round.Enemy.Count == 0)
+                round.Enemy = RandomMachine.GetMachines(5, [70, 50, 40, 30, 20, 10]);
+
+            DrawnGroup(reacts_e, round.Enemy, 5, new(1000, 250));
+
+        }    
+        if(button && game.Team.Count > 0)
+            fight = true;
+        // Round.Purchase(0);
+        // Round.Purchase(1);
+        Round.Purchase(2); 
+    }
+
+
+    public void DrawnGroup(RectangleF[] react, List<Machine> group, int size, Tuple<int, int> position)
+    {
+        X = 0;
+        for (int i = size-1; i >= 0 ; i--)
+        {
+            if (i >= group.Count)
+                react[i] = DrawEmpty(new RectangleF(position.Item1 + X, position.Item2, 200, 200), (i+1).ToString());
+            else
+                react[i] = DrawPiece(new RectangleF(position.Item1 + X, position.Item2, 200, 200), group[i].Attack, group[i].Life, group[i].Experience, group[i].Tier, true, group[i].Name);
+            X += 150;
+        }
+    }
+    public void DrawnStatus()
+    {
         DrawText("Coins: " + round.Coins.ToString(), Color.Black, new RectangleF(800, 45, 150, 50), 25f);
         for (int i = 0; i <= (game.Life*55); i+=55)
         {
@@ -69,76 +105,11 @@ public class ExampleApp : App
         {
             DrawText("⭐", Color.Magenta, new RectangleF(400 + i, 45, 50, 50), 40f);
         }
-
-         X = 0;
-        for (int i = 0; i < 5; i++)
-        {
-            if (game.Team.Count == 0 || i >= game.Team.Count)
-                reacts[i] = DrawEmpty(new RectangleF(100 + X, 250, 200, 200));
-            else
-                reacts[i] = DrawPiece(new RectangleF(100 + X, 250, 200, 200), game.Team[i].Attack, game.Team[i].Life, game.Team[i].Experience, game.Team[i].Tier, true, game.Team[i].Name);
-            X += 150;
-        }
-
-
-        if (!fight)
-        {
-            refresh = DrawButton(new RectangleF(650, 700, 200, 100), "Atualizar Loja");
-            if(round.Store.Count == 0 || refresh)
-            {
-                if(round.Coins <= 0)
-                    DrawText("Saldo Insuficiente!", Color.Red, new RectangleF(800, 300, 300, 100), 15f);
-                else if((DateTime.Now - time).TotalMilliseconds > 500 )
-                {
-                    Round.AddStore(RandomMachine.GetMachines(3, [70, 50, 40, 30, 20, 10]));
-                    round.Coins--;
-                    time = DateTime.Now;
-                }
-            }
-            X = 0;
-            
-            for (int i = 0; i < 3; i++)
-            {
-                if (i >= round.Store.Count)
-                    reacts_s[i] = DrawEmpty(new RectangleF(1100 + X, 700, 200, 200));
-                else
-                    reacts_s[i] = DrawPiece(new RectangleF(1100 + X, 700, 200, 200), round.Store[i].Attack, round.Store[i].Life, round.Store[i].Experience, round.Store[i].Tier, true, round.Store[i].Name);
-                X += 150;
-            }
-
-            
-            button = DrawButton(new RectangleF(400, 700, 200, 100), "LUTAR!");
-        }
-        else if (fight)
-        {
-            if(round.Enemy.Count == 0)
-                round.Enemy = RandomMachine.GetMachines(5, [70, 50, 40, 30, 20, 10]);
-
-            X = 0;
-            foreach (var mach in round.Enemy)
-            {
-                rect1 = DrawPiece(new RectangleF(1000 + X, 250, 200, 200), mach.Attack, mach.Life, mach.Experience, mach.Tier, true, mach.Name);
-                X += 150;
-            }
-        }    
-        if(button && game.Team.Count > 0)
-            fight = true;
-        // Round.Purchase(0);
-        // Round.Purchase(1);
-        // Round.Purchase(2); 
     }
-
-    // public void drawGroup(List<Machine> group, int size)
-    // {
-    //     for (int i = 0; i < 3; i++)
-    //     {
-    //         if (i >= round.Store.Count)
-    //             reacts_s[i] = DrawEmpty(new RectangleF(1100 + X, 700, 200, 200));
-    //         else
-    //             reacts_s[i] = DrawPiece(new RectangleF(1100 + X, 700, 200, 200), round.Store[i].Attack, round.Store[i].Life, round.Store[i].Experience, round.Store[i].Tier, true, round.Store[i].Name);
-    //         X += 150;
-    //     }
-    // }
+    public void DrawnButtons()
+    {
+        refresh = DrawButton(new RectangleF(650, 700, 200, 100), "Atualizar Loja");
+    }
 }
 
 

@@ -2,7 +2,7 @@
 using System.Drawing;
 
 namespace SuperAutoMachine;
-abstract class Machine(int attack, int life, int experience, int level)
+public abstract class Machine(int attack, int life, int experience, int level)
 {
     public string Name { get; set; } = "";
     public int Tier { get; set;} = 1;
