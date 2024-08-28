@@ -7,6 +7,7 @@ class Game
     public int Life { get; set; }
     public int Trophies { get; set; }
     public List<Machine> Team { get; set; }
+
     private static Game? currentGame = null;
     public static Game CurrentGame
     {
@@ -17,7 +18,6 @@ class Game
         }
     }
 
-    public Round round = Round.CurrentRound;
 
     public Game()
     {
@@ -25,11 +25,4 @@ class Game
         Life = 5;
         Trophies = 0;
     }
-
-    public void nextPlay(Machine machine)
-    {
-        
-    }
-
-
 }

@@ -7,7 +7,7 @@ class MFresaCNC : Machine
         : base(attack, life, experience, level)
     {
         Name =  "Fresa CNC";
-        Tier = 4;
+        Tier = 5;
     }
     // public MFresaCNC() : base(4, 5, 1, 1)
     // {

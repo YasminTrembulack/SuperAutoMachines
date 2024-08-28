@@ -87,15 +87,17 @@ public abstract class App
         g.DrawImage(img, location);
     }
  
-    public void DrawText(string text, Color color, RectangleF location)
+    public void DrawText(string text, Color color, RectangleF location, float fontSize)
     {
         var format = new StringFormat();
         format.Alignment = StringAlignment.Center;
         format.LineAlignment = StringAlignment.Center;
  
         var brush = new SolidBrush(color);
+
+        var font = new Font(SystemFonts.MenuFont.FontFamily, fontSize);
  
-        g.DrawString(text, SystemFonts.MenuFont, brush, location, format);
+        g.DrawString(text, font, brush, location, format);
     }
  
     public RectangleF DrawPiece(RectangleF location,
@@ -124,18 +126,18 @@ public abstract class App
         g.DrawRectangle(pen, rect.X, rect.Y, realWidth, rect.Height);
  
         if (image == null)
-            DrawText(name, Color.White, rect);
+            DrawText(name, Color.White, rect, 10f);
         else DrawImage(image, rect);
  
         var attackRect = new RectangleF(rect.X, rect.Y + .8f * rect.Height, realWidth / 3, realWidth / 3);
         g.FillEllipse(Brushes.Red, attackRect);
         g.DrawEllipse(yellowPen, attackRect);
-        DrawText(attack.ToString(), Color.White, attackRect);
+        DrawText(attack.ToString(), Color.White, attackRect, 15f);
  
         var lifeRect = new RectangleF(rect.X + 2 * realWidth / 3, rect.Y + .8f * rect.Height, realWidth / 3, realWidth / 3);
         g.FillEllipse(Brushes.Blue, lifeRect);
         g.DrawEllipse(yellowPen, lifeRect);
-        DrawText(life.ToString(), Color.White, lifeRect);
+        DrawText(life.ToString(), Color.White, lifeRect, 15f);
  
         RectangleF expRect = new RectangleF(rect.X + realWidth / 3 - 10, rect.Y + 20, 2 * realWidth / 3, realWidth / 6);
         int level = 1 + experience / 3;
@@ -148,10 +150,10 @@ public abstract class App
         var levelRect = new RectangleF(rect.X, rect.Y + 10, realWidth / 3, realWidth / 3);
         g.FillEllipse(Brushes.Green, levelRect);
         g.DrawEllipse(yellowPen, levelRect);
-        DrawText(level.ToString(), Color.White, levelRect);
+        DrawText(level.ToString(), Color.White, levelRect, 15f);
  
         var tierRect = new RectangleF(rect.X + realWidth / 3, rect.Y + .8f * rect.Height, realWidth / 3, realWidth / 3);
-        DrawText(tier.ToString(), Color.Orange, tierRect);
+        DrawText(tier.ToString(), Color.Orange, tierRect, 15f);
  
         if (!cursorIn || !isDown)
             return rect;
@@ -166,6 +168,24 @@ public abstract class App
  
         return rect;
     }
+
+    public RectangleF DrawEmpty(RectangleF location)
+    {
+        float realWidth = .6f * location.Height;
+        var realSize = new SizeF(realWidth, location.Height);
+ 
+        var deslocX = grabDesloc?.X ?? 0;
+        var deslocY = grabDesloc?.Y ?? 0;
+        var position = new PointF(location.X + deslocX, location.Y + deslocY);
+        RectangleF rect = new RectangleF(position, realSize);
+ 
+        bool cursorIn = rect.Contains(cursor);
+ 
+        if (!cursorIn && (deslocX != 0 || deslocY != 0))
+            rect = new RectangleF(location.Location, realSize);
+        g.FillRectangle(Brushes.Gray, rect);
+        return rect;
+    }
  
     public bool DrawButton(RectangleF location, string text)
     {
@@ -174,20 +194,20 @@ public abstract class App
             if (isDown)
             {
                 g.FillRectangle(Brushes.Red, location);
-                DrawText(text, Color.Black, location);
+                DrawText(text, Color.Black, location, 20f);
                 return true;
             }
             else
             {
                 g.FillRectangle(Brushes.BlueViolet, location);
-                DrawText(text, Color.White, location);
+                DrawText(text, Color.White, location, 20f);
                 return false;
             }
         }
         else
         {
             g.FillRectangle(Brushes.Blue, location);
-            DrawText(text, Color.White, location);
+            DrawText(text, Color.White, location, 20f);
             return false;
         }
     }

@@ -6,11 +6,6 @@ class MTornoCNC : Machine
         : base(attack, life, experience, level)
     {
         Name =  "Torno";
-        Tier = 4;
+        Tier = 5;
     }
-    // public MTornoCNC() : base(5, 3, 1, 1)
-    // {
-    //     Name =  "Torno";
-    //     Tier = 4;
-    // }
 }
