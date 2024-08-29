@@ -1,60 +1,58 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SuperAutoMachine;
 
+public enum Tier
+{
+    Tier1,
+    Tier2,
+    Tier3,
+    Tier4,
+    Tier5,
+    Tier6
+}
+
 class RandomMachine
 {
-    
-    public static List<Machine> GetMachines(int size, int[] sort)
+    private static readonly Random rand = new Random();
+    public static List<Machine> GetMachines(int size)
     {
-        Random rand = new();
-        List<Machine> team = new(size);
-
-        if(sort.Length != 6)
-            return team;
+        List<Machine> machines = new List<Machine>();
+        Tier maxTier = DetermineMaxTier(Game.CurrentGame.round);
 
         for (int i = 0; i < size; i++)
         {
-            int im = rand.Next(0, 100);
+            Tier tier = (Tier)rand.Next(0, (int)maxTier + 1);
 
-            if ( im <= sort[5])
+            machines.Add(tier switch
             {
-                team.Add(GetTier6());
-                continue;
-            }
-            else if ( im <= sort[4])
-            {
-                team.Add(GetTier5());
-                continue;
-            }
-            else if ( im <= sort[3])
-            {
-                team.Add(GetTier4());
-                continue;
-            }
-            else if ( im <= sort[2])
-            {
-                team.Add(GetTier3());
-                continue;
-            }
-            else if ( im <= sort[1])
-            {
-                team.Add(GetTier2());
-                continue;
-            }
-            else
-                team.Add(GetTier1());
-            
-            
+                // Tier.Tier1 => GetTier1(),
+                // Tier.Tier2 => GetTier2(),
+                // Tier.Tier3 => GetTier3(),
+                // Tier.Tier4 => GetTier4(),
+                // Tier.Tier5 => GetTier5(),
+                // Tier.Tier6 => GetTier6(),
+                // _ => throw new ArgumentException("Invalid tier")
+                _ => new MChaveDeFenda()
+            });
         }
-        return team;
+
+        return machines;
     } 
+
+    private static Tier DetermineMaxTier(int round)
+    {
+        if (round < 3) return Tier.Tier1;
+        if (round < 6) return Tier.Tier2;
+        if (round < 9) return Tier.Tier3;
+        if (round < 12) return Tier.Tier4;
+        if (round < 15) return Tier.Tier5;
+        return Tier.Tier6;
+    }
 
     public static Machine GetTier1()
     {
-        Random rand = new();
         int im = rand.Next(0, 2);
 
         return im switch
@@ -66,7 +64,6 @@ class RandomMachine
     }
     public static Machine GetTier2()
     {
-        Random rand = new();
         int im = rand.Next(0, 2);
 
         return im switch
@@ -79,7 +76,6 @@ class RandomMachine
 
     public static Machine GetTier3()
     {
-        Random rand = new();
         int im = rand.Next(0, 2);
 
         return im switch
@@ -91,7 +87,6 @@ class RandomMachine
     }
     public static Machine GetTier4()
     {
-        Random rand = new();
         int im = rand.Next(0, 1);
 
         return im switch
@@ -102,7 +97,6 @@ class RandomMachine
     }
     public static Machine GetTier5()
     {
-        Random rand = new();
         int im = rand.Next(0, 1);
 
         return im switch

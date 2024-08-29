@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace SuperAutoMachine;
@@ -13,36 +14,37 @@ class Round
     {
         get
         {
-            currentRound ??= new Round();
+            if (currentRound == null)
+            {
+                currentRound = new Round();
+                Game.CurrentGame.round++;
+            }
             return currentRound;
         }
     }
 
     public Round()
     {
-        Coins = 11;
+        Coins = 10;
         Store = new List<Machine>(3);
         Enemy = new List<Machine>(5);
     }
 
-    public static Round newRound()
+    public static void newRound()
     {
-        currentRound = new Round();
-        return currentRound;
+        currentRound = null;
     }
 
     public static void Purchase(int indexMachine)
     {
-        if (indexMachine < 0 || indexMachine > 2)
-            return;
         Game game = Game.CurrentGame;
-        
-        if(game.Team.Count == 5)
+
+        if (indexMachine < 0 || indexMachine > 2 || game.Team.Count == 5 || CurrentRound.Coins < 3)
             return;
 
         game.Team.Add(CurrentRound.Store[indexMachine]); 
-        CurrentRound.Coins--;     
         CurrentRound.Store.RemoveRange(indexMachine, 1);
+        CurrentRound.Coins -= 3;     
     }
 
     public static void AddStore(List<Machine> machines)
@@ -56,6 +58,27 @@ class Round
 
     public static void Fight()
     {
+        // Machine[] copyTeam = new Machine[5];
+        // Game.CurrentGame.Team.CopyTo(copyTeam);
+
+        // int team_player = 0;
+        // int enemy_player = 0;
+        // while (true)
+        // {
+        //     var mach_t = copyTeam[team_player];
+        //     var mach_e = copyTeam[enemy_player];
+            
+        //     if (true)
+        //     {
+                
+        //     }
+
+
+            
+        // }
+
+
+
         
     }
 

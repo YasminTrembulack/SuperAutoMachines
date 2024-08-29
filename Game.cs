@@ -8,6 +8,8 @@ class Game
     public int Trophies { get; set; }
     public List<Machine> Team { get; set; }
 
+    public int round { get; set; } = 0;
+
     private static Game? currentGame = null;
     public static Game CurrentGame
     {
@@ -17,7 +19,6 @@ class Game
             return currentGame;
         }
     }
-
 
     public Game()
     {

@@ -4,10 +4,9 @@ namespace SuperAutoMachine;
 class MChaveDeFenda : Machine
 {
     public MChaveDeFenda(int attack = 2, int life = 3, int experience = 1, int level = 1)
-        : base(attack, life, experience, level)
+        : base(attack, life, experience, level )
     { 
         Tier = 1;
         Name = "Chave de Fenda";
-        // Image = new Bitmap("C:/Users/disrct/Desktop/Yasmin/SuperAutoMachine/images/chavedefenda.png");
     }
 }
