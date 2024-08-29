@@ -8,7 +8,7 @@ public abstract class Machine(int attack, int life, int experience, int level)
     public int Tier { get; set;} = 1;
     public int Experience { get; set; } = experience;
     public int Level { get; set; } = level;
-    public Bitmap Image { get; set; }
+    public string Image { get; set; } = "";
     //  = new Bitmap("../../images/chave_de_fenda.bmp");
     public int Life { get; set; } = life;
     public int Attack { get; set; } = attack;

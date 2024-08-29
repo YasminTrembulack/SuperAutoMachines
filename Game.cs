@@ -23,7 +23,7 @@ class Game
     public Game()
     {
         Team = new List<Machine>(5);
-        Life = 5;
+        Life = 4;
         Trophies = 0;
     }
 }

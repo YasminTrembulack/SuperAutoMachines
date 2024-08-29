@@ -9,7 +9,7 @@ class MEsteira : Machine
     { 
         Tier =  1;
         Name = "Esteira";
-        // Image = new Bitmap("C:/Users/disrct/Desktop/Yasmin/SuperAutoMachine/images/esteira.jpg");
+        Image = "./images/esteira.bmp";
     }
 
     public override void Sell()

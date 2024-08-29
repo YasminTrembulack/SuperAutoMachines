@@ -8,5 +8,6 @@ class MChaveDeFenda : Machine
     { 
         Tier = 1;
         Name = "Chave de Fenda";
+        Image = "./images/chave_de_fenda.bmp";
     }
 }

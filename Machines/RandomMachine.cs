@@ -27,14 +27,14 @@ class RandomMachine
 
             machines.Add(tier switch
             {
-                // Tier.Tier1 => GetTier1(),
-                // Tier.Tier2 => GetTier2(),
-                // Tier.Tier3 => GetTier3(),
-                // Tier.Tier4 => GetTier4(),
-                // Tier.Tier5 => GetTier5(),
-                // Tier.Tier6 => GetTier6(),
-                // _ => throw new ArgumentException("Invalid tier")
-                _ => new MChaveDeFenda()
+                Tier.Tier1 => GetTier1(),
+                Tier.Tier2 => GetTier2(),
+                Tier.Tier3 => GetTier3(),
+                Tier.Tier4 => GetTier4(),
+                Tier.Tier5 => GetTier5(),
+                Tier.Tier6 => GetTier6(),
+                _ => throw new ArgumentException("Invalid tier")
+                // _ => new MChaveDeFenda()
             });
         }
 
@@ -53,7 +53,7 @@ class RandomMachine
 
     public static Machine GetTier1()
     {
-        int im = rand.Next(0, 2);
+        int im = rand.Next(0, 3);
 
         return im switch
         {
@@ -64,7 +64,7 @@ class RandomMachine
     }
     public static Machine GetTier2()
     {
-        int im = rand.Next(0, 2);
+        int im = rand.Next(0, 3);
 
         return im switch
         {
@@ -76,7 +76,7 @@ class RandomMachine
 
     public static Machine GetTier3()
     {
-        int im = rand.Next(0, 2);
+        int im = rand.Next(0, 3);
 
         return im switch
         {
@@ -87,7 +87,7 @@ class RandomMachine
     }
     public static Machine GetTier4()
     {
-        int im = rand.Next(0, 1);
+        int im = rand.Next(0, 2);
 
         return im switch
         {
@@ -97,7 +97,7 @@ class RandomMachine
     }
     public static Machine GetTier5()
     {
-        int im = rand.Next(0, 1);
+        int im = rand.Next(0, 2);
 
         return im switch
         {

@@ -103,7 +103,7 @@ public abstract class App
     public RectangleF DrawPiece(RectangleF location,
         int attack, int life, int experience, int tier,
         bool isGraspable,
-        string name, Bitmap image = null)
+        string name, int team = 0, Bitmap image = null)
     {
         float realWidth = .6f * location.Height;
         var realSize = new SizeF(realWidth, location.Height);
@@ -121,13 +121,18 @@ public abstract class App
         var pen = new Pen(cursorIn ? Color.Cyan : Color.Black, 4f);
         var yellowPen = new Pen(Color.Yellow, 3f);
         var whitePen = new Pen(Color.Yellow, 2f);
- 
-        g.FillRectangle(Brushes.Brown, rect);
+        if(team == 1)
+            g.FillRectangle(Brushes.DarkBlue, rect);
+        else if(team == 2)
+            g.FillRectangle(Brushes.DarkRed, rect);
+        else if(team == 0)
+            g.FillRectangle(Brushes.Brown, rect);
+
         g.DrawRectangle(pen, rect.X, rect.Y, realWidth, rect.Height);
  
         if (image == null)
             DrawText(name, Color.White, rect, 10f);
-        else DrawImage(image, rect);
+        else DrawImage(image, new RectangleF(new PointF(rect.X + 20, rect.Y + 60), new SizeF(80, 80)));
  
         var attackRect = new RectangleF(rect.X, rect.Y + .8f * rect.Height, realWidth / 3, realWidth / 3);
         g.FillEllipse(Brushes.Red, attackRect);

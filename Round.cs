@@ -10,6 +10,12 @@ class Round
     public List<Machine> Store { get; set; }
     public List<Machine> Enemy { get; set; }
     public static Round? currentRound = null;
+
+    // FIGHT
+    private Stack<Machine> team = new();
+    public Machine[] saveTeam;
+    private Stack<Machine> enemy = new();
+    private Game game = Game.CurrentGame;
     public static Round CurrentRound
     {
         get
@@ -17,6 +23,7 @@ class Round
             if (currentRound == null)
             {
                 currentRound = new Round();
+                AddStore(RandomMachine.GetMachines(3));
                 Game.CurrentGame.round++;
             }
             return currentRound;
@@ -56,38 +63,59 @@ class Round
 
 
 
-    public static void Fight()
+    public void StartFight()
     {
-        // Machine[] copyTeam = new Machine[5];
-        // Game.CurrentGame.Team.CopyTo(copyTeam);
+        foreach (var e in CurrentRound.Enemy)
+            enemy.Push(e);
+        foreach (var e in game.Team)
+            team.Push(e);
 
-        // int team_player = 0;
-        // int enemy_player = 0;
-        // while (true)
-        // {
-        //     var mach_t = copyTeam[team_player];
-        //     var mach_e = copyTeam[enemy_player];
+        game.Team.CopyTo(saveTeam);// AQUI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    }
+
+    public int FightStep()
+    {
+        if (team.TryPop(out var mach_t) && enemy.TryPop(out var mach_e))
+        {
+            mach_t.Life -= mach_e.Attack;
+            mach_e.Life -= mach_t.Attack;
             
-        //     if (true)
-        //     {
-                
-        //     }
-
-
+            mach_e.Hurt();
+            mach_t.Hurt();
+           
+            if (mach_e.Life > 0)
+                enemy.Push(mach_e); 
+            else
+                CurrentRound.Enemy.RemoveAt(CurrentRound.Enemy.Count-1);
             
-        // }
+            
+            if (mach_t.Life > 0)
+                team.Push(mach_t); 
+            else
+                game.Team.RemoveAt(game.Team.Count-1);
 
-
-
+        }
+        if (team.Count > 0 && enemy.Count == 0)
+        {
+            game.Trophies++;
+            
+            saveTeam.ToList().CopyTo(game.Team); // AQUI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            return 1; // Team wins
+        }
+        else if (team.Count == 0 && enemy.Count > 0)
+        {
+            game.Life--;
+            game.Team = saveTeam;// AQUI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            return -1; // Enemy wins
+        }
+        else if (team.Count == 0 && enemy.Count == 0)
+        {
+            game.Team = saveTeam;// AQUI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            return 2; // Draw
+        }
+        return 0; // Incomplete fight
         
     }
 
-    // public static List<Machine> RandomTeam()
-    // {
-
-    // }
-
 
 }
-
-// No round 3 caso tenha perdido vida aumenta 1 de vida

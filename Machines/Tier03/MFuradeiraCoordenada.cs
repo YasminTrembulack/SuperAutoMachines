@@ -13,9 +13,11 @@ class MFuradeiraCoordenada : Machine
 
     public override void Hurt()
     {
+        if (Life <=0)
+            return;
         Round round = Round.CurrentRound;
         Random rand = new Random();
-        int index = rand.Next(0, round.Enemy.Count-1);
+        int index = rand.Next(0, round.Enemy.Count);
         round.Enemy[index].Life--;
     }
 }

@@ -9,8 +9,7 @@ namespace SuperAutoMachine
         { 
             Tier = 1;
             Name = "Martelo";
-            // FileStream fs = new("C:/Users/disrct/Desktop/Yasmin/SuperAutoMachine/images/martelo.png", FileMode.Open, FileAccess.Read);
-            // Image = new Bitmap(fs);
+            Image = "./images/martelo.bmp";
         }
     }
 }

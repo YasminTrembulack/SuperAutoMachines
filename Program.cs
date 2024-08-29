@@ -1,4 +1,4 @@
-﻿App app = new ExampleApp();
+﻿App app = new SuperAutoMachines();
 app.Run();
  
 
