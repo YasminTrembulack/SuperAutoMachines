@@ -1,5 +1,3 @@
-using System.Drawing;
-
 namespace SuperAutoMachine
 {
     class MMartelo : Machine
@@ -19,6 +17,12 @@ namespace SuperAutoMachine
                 Tier = this.Tier,
                 Image = this.Image
             };
+        }
+
+        public override void Sell() 
+        {
+            foreach (var mach in Round.CurrentRound.Store)
+                mach.Life++;
         }
     }
 }

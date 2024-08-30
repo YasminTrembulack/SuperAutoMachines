@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 namespace SuperAutoMachine;
 
@@ -19,5 +20,11 @@ class MChaveDeFenda : Machine
             Tier = this.Tier,
             Image = this.Image
         };
+    }
+
+    public override void Sell() 
+    {
+        Random rand = new();
+        Game.CurrentGame.Team[rand.Next(0, Game.CurrentGame.Team.Count-1)].Life++;
     }
 }

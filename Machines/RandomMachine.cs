@@ -23,7 +23,7 @@ class RandomMachine
 
         for (int i = 0; i < size; i++)
         {
-            Tier tier = (Tier)rand.Next(0, (int)maxTier + 1);
+            Tier tier = (Tier)rand.Next(0, (int)maxTier);
 
             machines.Add(tier switch
             {
@@ -44,10 +44,10 @@ class RandomMachine
     private static Tier DetermineMaxTier(int round)
     {
         if (round < 3) return Tier.Tier1;
-        if (round < 6) return Tier.Tier2;
-        if (round < 9) return Tier.Tier3;
-        if (round < 12) return Tier.Tier4;
-        if (round < 15) return Tier.Tier5;
+        if (round < 5) return Tier.Tier2;
+        if (round < 7) return Tier.Tier3;
+        if (round < 9) return Tier.Tier4;
+        if (round < 11) return Tier.Tier5;
         return Tier.Tier6;
     }
 

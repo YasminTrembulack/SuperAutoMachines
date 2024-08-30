@@ -174,7 +174,7 @@ public abstract class App
         return rect;
     }
 
-    public RectangleF DrawEmpty(RectangleF location, string text)
+    public RectangleF DrawEmpty(RectangleF location, string text, int type)
     {
         float realWidth = .6f * location.Height;
         var realSize = new SizeF(realWidth, location.Height);
@@ -188,7 +188,10 @@ public abstract class App
  
         if (!cursorIn && (deslocX != 0 || deslocY != 0))
             rect = new RectangleF(location.Location, realSize);
-        g.FillRectangle(Brushes.Gray, rect);
+        if (type == 1)
+            g.FillRectangle(Brushes.Gray, rect);
+        else if (type == 0)
+            g.FillRectangle(Brushes.IndianRed, rect);
 
         DrawText(text, Color.Black, rect, 20f);
         return rect;

@@ -1,26 +1,27 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Microsoft.VisualBasic.Devices;
 using SuperAutoMachine;
 
 public class SuperAutoMachines : App
 {
     int result_fight = 0;
     Tuple<string, Color> msg_fight = new("", Color.White);
-    bool fundiu = false;
+    // bool fundiu = false;
     bool fight = false;
     bool button = false;
     bool refresh = false;
-    int X = 0;
     DateTime time;
     DateTime time_msg;
     DateTime time_fight;
     RectangleF[] reacts_t = new RectangleF[5];
+    RectangleF[] reacts_empty = new RectangleF[5];
     RectangleF[] reacts_e = new RectangleF[5];
     RectangleF[] reacts_s = new RectangleF[3];
+    RectangleF react_sell = RectangleF.Empty;
     Game game = Game.CurrentGame;
     Round round = Round.CurrentRound;
+    bool winorlose = false;
 
     public SuperAutoMachines()
     {
@@ -41,34 +42,40 @@ public class SuperAutoMachines : App
 
     public override void OnFrame(bool isDown, PointF cursor)
     {
-        if (game.Life <= 0)
-        {
-            DrawText("Você perdeu :(", Color.Red, new RectangleF(800, 500, 300, 100), 25f); 
-        }
-        if (game.Trophies == 10)
-        {
-            DrawText("Você ganhou! :)", Color.Green, new RectangleF(800, 500, 300, 100), 25f); 
-        }
+        WinOrLose();
+            
+        DrawStatus();
         for (int i = 0; i < 5; i++)
         {
             for (int j = 0; j < round.Store.Count; j++)
             {
-                if (reacts_t[i].Contains(cursor) && reacts_s[j].Contains(cursor) && !isDown)
+                if (reacts_empty[i].Contains(cursor) && reacts_s[j].Contains(cursor) && !isDown)
                 {
                     Round.Purchase(j);
                     break;
                 }
             }
+            if (reacts_t[i].Contains(cursor) && react_sell.Contains(cursor) && !isDown)
+            {
+                Round.SellMachine(i);
+                break;
+            }
+            for (int j = 0; j < game.Team.Count; j++)
+            {
+                if (i != j && game.Team.Count > 1 &&reacts_t[i].Contains(cursor) && reacts_t[j].Contains(cursor) && !isDown && game.Team[i].Name == game.Team[j].Name)
+                {
+                    Round.Merge(i, j);
+                    break;
+                }
+            }
         }
-
-        DrawStatus();
 
         if (!fight)
         {
             DrawGroup(reacts_t, game.Team, 5, new(100, 250), 1);
-            DrawImage(new Bitmap("./images/coin.bmp"), new RectangleF(50, 45, 50, 50));
+            // DrawImage(new Bitmap("./images/coin.bmp"), new RectangleF(50, 45, 50, 50));
             DrawText(round.Coins.ToString(), Color.Black, new RectangleF(55, 45, 150, 50), 25f);
-            refresh = DrawButton(new RectangleF(950, 700, 200, 100), "Atualizar Loja");
+
             if(refresh)
             {
                 if(round.Coins <= 0)
@@ -81,14 +88,22 @@ public class SuperAutoMachines : App
                     round.Coins--;
                 }
             }
-            
-            DrawGroup(reacts_s, round.Store, 3, new(100, 700), 1);
 
-            button = DrawButton(new RectangleF(700, 700, 200, 100), "Lutar!");
+            
+
+            react_sell = DrawEmpty(new RectangleF(100, 700, 200, 200), "Vender Maquina", 0);
+
+            DrawGroup(reacts_t, game.Team, 5, new(100, 250), 1);
+            DrawGroup(reacts_s, round.Store, 3, new(330, 700), 1);
+            DrawButtons();
+            
 
             if (button && game.Team.Count > 0)
             {
                 result_fight = 0;
+                foreach (var mach in game.Team)
+                    mach.EndBuy();
+                
                 int numberOfMachines = game.round == 1 ? 3 : 5;
                 if(round.Enemy.Count == 0)
                     round.Enemy = RandomMachine.GetMachines(numberOfMachines);
@@ -107,12 +122,24 @@ public class SuperAutoMachines : App
     
     }
 
+    public void WinOrLose()
+    {
+        if (game.Life <= 0)
+        {
+            DrawText("Você perdeu :(", Color.Red, new RectangleF(800, 500, 300, 100), 25f); 
+        }
+        if (game.Trophies == 10)
+        {
+            DrawText("Você ganhou! :)", Color.Green, new RectangleF(800, 500, 300, 100), 25f); 
+        }
+        winorlose = true;
+    }
     public void Fight()
     {
         DrawGroup(reacts_e, round.Enemy, 5, new(1000, 250), 2);
         DrawGroup(reacts_t, round.SaveTeam, 5, new(100, 250), 1);
         
-        if ((DateTime.Now - time_fight).TotalMilliseconds > 1500)
+        if ((DateTime.Now - time_fight).TotalMilliseconds > 2500)
         {
             if (result_fight == 0){
                 result_fight = round.FightStep();
@@ -123,22 +150,30 @@ public class SuperAutoMachines : App
                 Round.newRound();
                 round = Round.CurrentRound;
                 time_msg = DateTime.Now;
+                foreach (var mach in game.Team)
+                    mach.StartBuy();
             }
         }
         
     }
     public void DrawGroup(RectangleF[] react, List<Machine> group, int size, Tuple<int, int> position, int team)
     {
-        X = 0;
+        int X = 0;
         for (int i = 0; i < size ; i++)
         {
-            if (i >= group.Count)
-                react[i] = DrawEmpty(new RectangleF(position.Item1 + X, position.Item2, 200, 200), (i+1).ToString());
-            else{
-                if(group[i].Image == "")
-                    react[i] = DrawPiece(new RectangleF(position.Item1 + X, position.Item2, 200, 200), group[i].Attack, group[i].Life, group[i].Experience, group[i].Tier, true, group[i].Name, team);
+            if (i >= group.Count || team == 0)
+            {
+                if(team == 1)
+                    reacts_empty[i] = DrawEmpty(new RectangleF(position.Item1 + X, position.Item2, 200, 200), (i+1).ToString(), 1);
                 else
-                    react[i] = DrawPiece(new RectangleF(position.Item1 + X, position.Item2, 200, 200), group[i].Attack, group[i].Life, group[i].Experience, group[i].Tier, true, group[i].Name, team, new Bitmap(group[i].Image));
+                    react[i] = DrawEmpty(new RectangleF(position.Item1 + X, position.Item2, 200, 200), (i+1).ToString(), 1);
+            }
+            else
+            {
+                // if(group[i].Image == "")
+                    react[i] = DrawPiece(new RectangleF(position.Item1 + X, position.Item2, 200, 200), group[i].Attack, group[i].Life, group[i].Experience, group[i].Tier, true, group[i].Name, team);
+                // else
+                    // react[i] = DrawPiece(new RectangleF(position.Item1 + X, position.Item2, 200, 200), group[i].Attack, group[i].Life, group[i].Experience, group[i].Tier, true, group[i].Name, team, new Bitmap(group[i].Image));
             }
             X += 150;
         }
@@ -156,9 +191,9 @@ public class SuperAutoMachines : App
     }
     public void DrawButtons()
     {
-        refresh = DrawButton(new RectangleF(650, 700, 200, 100), "Atualizar Loja");
+        button = DrawButton(new RectangleF(1100, 700, 200, 100), "Lutar!");
+        refresh = DrawButton(new RectangleF(850, 700, 200, 100), "Atualizar Loja");
     }
-
     public void ShowResult()
     {
         if (result_fight == 1)

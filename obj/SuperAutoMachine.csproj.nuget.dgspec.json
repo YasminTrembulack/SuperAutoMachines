@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\disrct\\Desktop\\Yasmin\\SuperAutoMachine\\SuperAutoMachine.csproj": {}
+    "C:\\Users\\disrct\\Desktop\\Yasmin\\SuperAutoMachines\\SuperAutoMachine.csproj": {}
   },
   "projects": {
-    "C:\\Users\\disrct\\Desktop\\Yasmin\\SuperAutoMachine\\SuperAutoMachine.csproj": {
+    "C:\\Users\\disrct\\Desktop\\Yasmin\\SuperAutoMachines\\SuperAutoMachine.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\disrct\\Desktop\\Yasmin\\SuperAutoMachine\\SuperAutoMachine.csproj",
+        "projectUniqueName": "C:\\Users\\disrct\\Desktop\\Yasmin\\SuperAutoMachines\\SuperAutoMachine.csproj",
         "projectName": "SuperAutoMachine",
-        "projectPath": "C:\\Users\\disrct\\Desktop\\Yasmin\\SuperAutoMachine\\SuperAutoMachine.csproj",
+        "projectPath": "C:\\Users\\disrct\\Desktop\\Yasmin\\SuperAutoMachines\\SuperAutoMachine.csproj",
         "packagesPath": "C:\\Users\\disrct\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\disrct\\Desktop\\Yasmin\\SuperAutoMachine\\obj\\",
+        "outputPath": "C:\\Users\\disrct\\Desktop\\Yasmin\\SuperAutoMachines\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\disrct\\AppData\\Roaming\\NuGet\\NuGet.Config"

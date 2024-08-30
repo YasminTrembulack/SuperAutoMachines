@@ -19,6 +19,7 @@ class Round
                 currentRound = new Round();
                 AddStore(RandomMachine.GetMachines(3));
                 Game.CurrentGame.round++;
+                if(Game.CurrentGame.round == 3 && Game.CurrentGame.Life < 5) Game.CurrentGame.Life++;
             }
             return currentRound;
         }
@@ -63,25 +64,38 @@ class Round
 
     public void StartFight()
     {
-        // foreach (var e in CurrentRound.Enemy)
-        //     FEnemy.Push(e);
-        // foreach (var e in game.Team)
-        //     FTeam.Push(e);
-
-        // Machine[] list = new Machine[Game.CurrentGame.Team.Count];
-        // Game.CurrentGame.Team.CopyTo(list);
-        // SaveTeam = [.. list];
-
-        Machine[] temp = new Machine[Game.CurrentGame.Team.Count];
-        Game.CurrentGame.Team.CopyTo(temp);
-        SaveTeam = [.. temp];
-        foreach (var m in temp)
-            FTeam.Push(m.Clone());
-
-        temp = new Machine[CurrentRound.Enemy.Count];
-        CurrentRound.Enemy.CopyTo(temp);
-        foreach (var e in temp)
+        for (int i = 0; i < game.Team.Count; i++)
+        {
+            SaveTeam.Add(game.Team[i].Clone());
+            FTeam.Push(SaveTeam[i]);
+        }
+        
+        foreach (var e in CurrentRound.Enemy)
             FEnemy.Push(e.Clone());
+    }
+
+    public static void SellMachine(int index)
+    {
+        Game.CurrentGame.Team[index].Sell();
+        CurrentRound.Coins += Game.CurrentGame.Team[index].Level;
+        Game.CurrentGame.Team.RemoveAt(index);
+    }
+
+    public static void Merge(int indexA, int indexB)
+    {
+        List<Machine> team = Game.CurrentGame.Team;
+
+        if(team[indexA].Level == 3 || team[indexA].Level == 3 )
+            return;
+        Machine newMach = team[indexA].Clone();
+        newMach.Attack = team[indexA].Attack > team[indexB].Attack ? team[indexA].Attack + 1: team[indexB].Attack + 1;
+        newMach.Life = team[indexA].Life > team[indexB].Life ? team[indexA].Life + 1: team[indexB].Life + 1;
+        newMach.Experience = team[indexA].Experience + team[indexB].Experience;
+        newMach.Level = newMach.Experience >= 6 ? newMach.Level = 3: newMach.Experience >= 3 ? newMach.Level = 2 : newMach.Level;
+
+        team.Add(newMach);
+        team.RemoveAt(indexA);
+        team.RemoveAt(indexB);
     }
 
     public int FightStep()
@@ -96,15 +110,18 @@ class Round
            
             if (mach_e.Life > 0)
                 FEnemy.Push(mach_e); 
-            else
+            else{
+                mach_e.Death();
                 CurrentRound.Enemy.RemoveAt(CurrentRound.Enemy.Count-1);
+            }
             
             
             if (mach_t.Life > 0)
                 FTeam.Push(mach_t); 
-            else
+            else{
+                mach_t.Death();
                 CurrentRound.SaveTeam.RemoveAt(CurrentRound.SaveTeam.Count-1);
-
+            }
         }
         if (FTeam.Count > 0 && FEnemy.Count == 0)
         {
@@ -123,6 +140,4 @@ class Round
         return 0; // Incomplete fight
         
     }
-
-
 }
