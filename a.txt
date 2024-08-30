@@ -1,7 +1,0 @@
-System.NullReferenceException: Object reference not set to an instance of an object.
-   at SuperAutoMachines.DrawGroup(RectangleF[] react, List`1 group, Int32 size, Tuple`2 position, Int32 team) in C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\SuperAutoMachines.cs:line 133
-   at SuperAutoMachines.Fight() in C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\SuperAutoMachines.cs:line 109
-   at SuperAutoMachines.OnFrame(Boolean isDown, PointF cursor) in C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\SuperAutoMachines.cs:line 98
-   at App.<>c__DisplayClass7_0.<Run>b__5(Object <p0>, EventArgs <p1>) in C:\Users\disrct\Desktop\Yasmin\SuperAutoMachine\App.cs:line 74
-   at System.Windows.Forms.Timer.TimerNativeWindow.WndProc(Message& m)
-   at System.Windows.Forms.NativeWindow.Callback(HWND hWnd, MessageId msg, WPARAM wparam, LPARAM lparam)
