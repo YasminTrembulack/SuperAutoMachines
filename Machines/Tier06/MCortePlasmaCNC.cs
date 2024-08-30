@@ -8,5 +8,14 @@ class MCortePlasmaCNC : Machine
         Name =  "Corte a Plasma CNC";
         Tier = 6;
     }
+    public override MCortePlasmaCNC Clone()
+    {
+        return new MCortePlasmaCNC(this.Attack, this.Life, this.Experience, this.Level)
+        {
+            Name = this.Name,
+            Tier = this.Tier,
+            Image = this.Image
+        };
+    }
     
 }

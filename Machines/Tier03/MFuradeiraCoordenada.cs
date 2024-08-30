@@ -20,4 +20,14 @@ class MFuradeiraCoordenada : Machine
         int index = rand.Next(0, round.Enemy.Count);
         round.Enemy[index].Life--;
     }
+
+       public override MFuradeiraCoordenada Clone()
+    {
+        return new MFuradeiraCoordenada(this.Attack, this.Life, this.Experience, this.Level)
+        {
+            Name = this.Name,
+            Tier = this.Tier,
+            Image = this.Image
+        };
+    }
 }

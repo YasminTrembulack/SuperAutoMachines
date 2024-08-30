@@ -8,4 +8,14 @@ class MFornoIndustrailEletrico : Machine
         Name = "Forno Industrial Elétrico";
         Tier = 3;
     }
+
+       public override MFornoIndustrailEletrico Clone()
+    {
+        return new MFornoIndustrailEletrico(this.Attack, this.Life, this.Experience, this.Level)
+        {
+            Name = this.Name,
+            Tier = this.Tier,
+            Image = this.Image
+        };
+    }
 }

@@ -8,4 +8,14 @@ class MTornoCNC : Machine
         Name =  "Torno";
         Tier = 5;
     }
+
+    public override MTornoCNC Clone()
+    {
+        return new MTornoCNC(this.Attack, this.Life, this.Experience, this.Level)
+        {
+            Name = this.Name,
+            Tier = this.Tier,
+            Image = this.Image
+        };
+    }
 }

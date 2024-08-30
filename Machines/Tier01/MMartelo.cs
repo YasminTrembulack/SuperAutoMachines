@@ -11,5 +11,14 @@ namespace SuperAutoMachine
             Name = "Martelo";
             Image = "./images/martelo.bmp";
         }
+        public override MMartelo Clone()
+        {
+            return new MMartelo(this.Attack, this.Life, this.Experience, this.Level)
+            {
+                Name = this.Name,
+                Tier = this.Tier,
+                Image = this.Image
+            };
+        }
     }
 }

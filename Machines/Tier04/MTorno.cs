@@ -9,11 +9,15 @@ class MTorno : Machine
         Name =  "Torno";
         Tier = 4;
     }
-    // public MTorno() : base(5, 3, 1, 1)
-    // {
-    //     Name =  "Torno";
-    //     Tier = 4;
-    // }
+    public override MTorno Clone()
+    {
+        return new MTorno(this.Attack, this.Life, this.Experience, this.Level)
+        {
+            Name = this.Name,
+            Tier = this.Tier,
+            Image = this.Image
+        };
+    }
 
     public override void EndBuy()
     {

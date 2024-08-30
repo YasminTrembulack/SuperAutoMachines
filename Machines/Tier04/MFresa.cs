@@ -9,9 +9,13 @@ class MFresa : Machine
         Name =  "Fresa";
         Tier = 4;
     }
-    // public MFresa() : base(4, 5, 1, 1)
-    // {
-    //     Name =  "Fresa";
-    //     Tier = 4;
-    // }
+       public override MFresa Clone()
+    {
+        return new MFresa(this.Attack, this.Life, this.Experience, this.Level)
+        {
+            Name = this.Name,
+            Tier = this.Tier,
+            Image = this.Image
+        };
+    }
 }

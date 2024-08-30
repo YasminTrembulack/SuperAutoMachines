@@ -17,4 +17,14 @@ class MEsteira : Machine
         Round round = Round.CurrentRound;
         round.Coins++;
     }
+
+    public override MEsteira Clone()
+    {
+        return new MEsteira(this.Attack, this.Life, this.Experience, this.Level)
+        {
+            Name = this.Name,
+            Tier = this.Tier,
+            Image = this.Image
+        };
+    }
 }

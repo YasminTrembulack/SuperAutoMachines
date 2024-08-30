@@ -10,4 +10,13 @@ class MRetificaPlana : Machine
         Name =  "Retífica Plana";
         Tier = 2;
     }
+       public override MRetificaPlana Clone()
+    {
+        return new MRetificaPlana(this.Attack, this.Life, this.Experience, this.Level)
+        {
+            Name = this.Name,
+            Tier = this.Tier,
+            Image = this.Image
+        };
+    }
 }

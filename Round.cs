@@ -10,12 +10,6 @@ class Round
     public List<Machine> Store { get; set; }
     public List<Machine> Enemy { get; set; }
     public static Round? currentRound = null;
-
-    // FIGHT
-    private Stack<Machine> team = new();
-    public Machine[] saveTeam;
-    private Stack<Machine> enemy = new();
-    private Game game = Game.CurrentGame;
     public static Round CurrentRound
     {
         get
@@ -30,11 +24,18 @@ class Round
         }
     }
 
+    // FIGHT
+    public List<Machine> SaveTeam { get; set; }
+    private Stack<Machine> FTeam = new();
+    private Stack<Machine> FEnemy = new();
+    private Game game = Game.CurrentGame;
+
     public Round()
     {
         Coins = 10;
         Store = new List<Machine>(3);
         Enemy = new List<Machine>(5);
+        SaveTeam = new List<Machine>(5);
     }
 
     public static void newRound()
@@ -60,22 +61,32 @@ class Round
         CurrentRound.Store = machines;  
     }
 
-
-
-
     public void StartFight()
     {
-        foreach (var e in CurrentRound.Enemy)
-            enemy.Push(e);
-        foreach (var e in game.Team)
-            team.Push(e);
+        // foreach (var e in CurrentRound.Enemy)
+        //     FEnemy.Push(e);
+        // foreach (var e in game.Team)
+        //     FTeam.Push(e);
 
-        game.Team.CopyTo(saveTeam);// AQUI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // Machine[] list = new Machine[Game.CurrentGame.Team.Count];
+        // Game.CurrentGame.Team.CopyTo(list);
+        // SaveTeam = [.. list];
+
+        Machine[] temp = new Machine[Game.CurrentGame.Team.Count];
+        Game.CurrentGame.Team.CopyTo(temp);
+        SaveTeam = [.. temp];
+        foreach (var m in temp)
+            FTeam.Push(m.Clone());
+
+        temp = new Machine[CurrentRound.Enemy.Count];
+        CurrentRound.Enemy.CopyTo(temp);
+        foreach (var e in temp)
+            FEnemy.Push(e.Clone());
     }
 
     public int FightStep()
     {
-        if (team.TryPop(out var mach_t) && enemy.TryPop(out var mach_e))
+        if (FTeam.TryPop(out var mach_t) && FEnemy.TryPop(out var mach_e))
         {
             mach_t.Life -= mach_e.Attack;
             mach_e.Life -= mach_t.Attack;
@@ -84,33 +95,29 @@ class Round
             mach_t.Hurt();
            
             if (mach_e.Life > 0)
-                enemy.Push(mach_e); 
+                FEnemy.Push(mach_e); 
             else
                 CurrentRound.Enemy.RemoveAt(CurrentRound.Enemy.Count-1);
             
             
             if (mach_t.Life > 0)
-                team.Push(mach_t); 
+                FTeam.Push(mach_t); 
             else
-                game.Team.RemoveAt(game.Team.Count-1);
+                CurrentRound.SaveTeam.RemoveAt(CurrentRound.SaveTeam.Count-1);
 
         }
-        if (team.Count > 0 && enemy.Count == 0)
+        if (FTeam.Count > 0 && FEnemy.Count == 0)
         {
             game.Trophies++;
-            
-            saveTeam.ToList().CopyTo(game.Team); // AQUI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             return 1; // Team wins
         }
-        else if (team.Count == 0 && enemy.Count > 0)
+        else if (FTeam.Count == 0 && FEnemy.Count > 0)
         {
             game.Life--;
-            game.Team = saveTeam;// AQUI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             return -1; // Enemy wins
         }
-        else if (team.Count == 0 && enemy.Count == 0)
+        else if (FTeam.Count == 0 && FEnemy.Count == 0)
         {
-            game.Team = saveTeam;// AQUI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             return 2; // Draw
         }
         return 0; // Incomplete fight

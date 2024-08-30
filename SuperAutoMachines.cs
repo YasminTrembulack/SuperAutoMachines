@@ -43,7 +43,11 @@ public class SuperAutoMachines : App
     {
         if (game.Life <= 0)
         {
-            DrawText("Você perdeu!", Color.Red, new RectangleF(800, 500, 300, 100), 25f); 
+            DrawText("Você perdeu :(", Color.Red, new RectangleF(800, 500, 300, 100), 25f); 
+        }
+        if (game.Trophies == 10)
+        {
+            DrawText("Você ganhou! :)", Color.Green, new RectangleF(800, 500, 300, 100), 25f); 
         }
         for (int i = 0; i < 5; i++)
         {
@@ -58,11 +62,11 @@ public class SuperAutoMachines : App
         }
 
         DrawStatus();
-        DrawGroup(reacts_t, game.Team, 5, new(100, 250), 1);
 
         if (!fight)
         {
-            // DrawImage(new Bitmap("./images/coin.bmp"), new RectangleF(50, 45, 50, 50));
+            DrawGroup(reacts_t, game.Team, 5, new(100, 250), 1);
+            DrawImage(new Bitmap("./images/coin.bmp"), new RectangleF(50, 45, 50, 50));
             DrawText(round.Coins.ToString(), Color.Black, new RectangleF(55, 45, 150, 50), 25f);
             refresh = DrawButton(new RectangleF(950, 700, 200, 100), "Atualizar Loja");
             if(refresh)
@@ -106,20 +110,22 @@ public class SuperAutoMachines : App
     public void Fight()
     {
         DrawGroup(reacts_e, round.Enemy, 5, new(1000, 250), 2);
+        DrawGroup(reacts_t, round.SaveTeam, 5, new(100, 250), 1);
         
-
-        if ((DateTime.Now - time_fight).TotalMilliseconds > 2000 && result_fight == 0){
-            result_fight = round.FightStep();
-            time_fight = DateTime.Now; 
+        if ((DateTime.Now - time_fight).TotalMilliseconds > 1500)
+        {
+            if (result_fight == 0){
+                result_fight = round.FightStep();
+                time_fight = DateTime.Now; 
+            }    
+            if(result_fight != 0){
+                fight = false;
+                Round.newRound();
+                round = Round.CurrentRound;
+                time_msg = DateTime.Now;
+            }
         }
         
-        if(result_fight != 0 && (DateTime.Now - time_fight).TotalMilliseconds > 2000){
-            game.Team = round.saveTeam;
-            fight = false;
-            Round.newRound();
-            round = Round.CurrentRound;
-            time_msg = DateTime.Now;
-        }
     }
     public void DrawGroup(RectangleF[] react, List<Machine> group, int size, Tuple<int, int> position, int team)
     {
@@ -129,10 +135,10 @@ public class SuperAutoMachines : App
             if (i >= group.Count)
                 react[i] = DrawEmpty(new RectangleF(position.Item1 + X, position.Item2, 200, 200), (i+1).ToString());
             else{
-                // if(group[i].Image == "")
+                if(group[i].Image == "")
                     react[i] = DrawPiece(new RectangleF(position.Item1 + X, position.Item2, 200, 200), group[i].Attack, group[i].Life, group[i].Experience, group[i].Tier, true, group[i].Name, team);
-                // else
-                    // react[i] = DrawPiece(new RectangleF(position.Item1 + X, position.Item2, 200, 200), group[i].Attack, group[i].Life, group[i].Experience, group[i].Tier, true, group[i].Name, team, new Bitmap(group[i].Image));
+                else
+                    react[i] = DrawPiece(new RectangleF(position.Item1 + X, position.Item2, 200, 200), group[i].Attack, group[i].Life, group[i].Experience, group[i].Tier, true, group[i].Name, team, new Bitmap(group[i].Image));
             }
             X += 150;
         }

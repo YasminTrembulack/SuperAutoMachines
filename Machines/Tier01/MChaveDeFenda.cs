@@ -10,4 +10,14 @@ class MChaveDeFenda : Machine
         Name = "Chave de Fenda";
         Image = "./images/chave_de_fenda.bmp";
     }
+
+    public override MChaveDeFenda Clone()
+    {
+        return new MChaveDeFenda(this.Attack, this.Life, this.Experience, this.Level)
+        {
+            Name = this.Name,
+            Tier = this.Tier,
+            Image = this.Image
+        };
+    }
 }

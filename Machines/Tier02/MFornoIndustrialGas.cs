@@ -14,4 +14,14 @@ class MFornoIndustrialGas : Machine
         Round round = Round.CurrentRound;
         round.Coins++;
     }
+
+    public override MFornoIndustrialGas Clone()
+    {
+        return new MFornoIndustrialGas(this.Attack, this.Life, this.Experience, this.Level)
+        {
+            Name = this.Name,
+            Tier = this.Tier,
+            Image = this.Image
+        };
+    }
 }

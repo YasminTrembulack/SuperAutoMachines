@@ -9,9 +9,13 @@ class MFresaCNC : Machine
         Name =  "Fresa CNC";
         Tier = 5;
     }
-    // public MFresaCNC() : base(4, 5, 1, 1)
-    // {
-    //     Name =  "Fresa CNC";
-    //     Tier = 4;
-    // }
+    public override MFresaCNC Clone()
+    {
+        return new MFresaCNC(this.Attack, this.Life, this.Experience, this.Level)
+        {
+            Name = this.Name,
+            Tier = this.Tier,
+            Image = this.Image
+        };
+    }
 }

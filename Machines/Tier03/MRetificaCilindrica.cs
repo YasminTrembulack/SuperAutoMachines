@@ -9,4 +9,14 @@ class MRetificaCilindrica : Machine
         Name =  "Retífica Cilíndrica";
         Tier = 3;
     }
+
+       public override MRetificaCilindrica Clone()
+    {
+        return new MRetificaCilindrica(this.Attack, this.Life, this.Experience, this.Level)
+        {
+            Name = this.Name,
+            Tier = this.Tier,
+            Image = this.Image
+        };
+    }
 }

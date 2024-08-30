@@ -8,4 +8,13 @@ class MFuradeiraColunar : Machine
         Name =  "Furadeira de Coluna";
         Tier = 2;
     }
+     public override MFuradeiraColunar Clone()
+    {
+        return new MFuradeiraColunar(this.Attack, this.Life, this.Experience, this.Level)
+        {
+            Name = this.Name,
+            Tier = this.Tier,
+            Image = this.Image
+        };
+    }
 }
