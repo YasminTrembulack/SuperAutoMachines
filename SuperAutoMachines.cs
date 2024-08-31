@@ -15,19 +15,22 @@ public class SuperAutoMachines : App
     DateTime time_msg;
     DateTime time_fight;
     RectangleF[] reacts_t = new RectangleF[5];
-    RectangleF[] reacts_empty = new RectangleF[5];
     RectangleF[] reacts_e = new RectangleF[5];
     RectangleF[] reacts_s = new RectangleF[3];
     RectangleF react_sell = RectangleF.Empty;
     Game game = Game.CurrentGame;
     Round round = Round.CurrentRound;
-    bool winorlose = false;
+    bool winorlose = true;
 
     public SuperAutoMachines()
     {
         Round.AddStore(RandomMachine.GetMachines(3));
 
         // game.Team = RandomMachine.GetMachines(2);
+        // game.Team.Add(new MMartelo());
+        // game.Team.Add(new MEsteira());
+        // game.Team.Add(new MMartelo());
+
         // round.Enemy = RandomMachine.GetMachines(4);
         // result_fight = round.Fight();
 
@@ -49,7 +52,7 @@ public class SuperAutoMachines : App
         {
             for (int j = 0; j < round.Store.Count; j++)
             {
-                if (reacts_empty[i].Contains(cursor) && reacts_s[j].Contains(cursor) && !isDown)
+                if (reacts_t[i].Contains(cursor) && reacts_s[j].Contains(cursor) && !isDown)
                 {
                     Round.Purchase(j);
                     break;
@@ -60,15 +63,19 @@ public class SuperAutoMachines : App
                 Round.SellMachine(i);
                 break;
             }
+            if (i >= game.Team.Count)
+                continue; // Pule iterações com índices inválidos
+
             for (int j = 0; j < game.Team.Count; j++)
             {
-                if (i != j && game.Team.Count > 1 &&reacts_t[i].Contains(cursor) && reacts_t[j].Contains(cursor) && !isDown && game.Team[i].Name == game.Team[j].Name)
+                if (i != j && game.Team.Count > 1 && reacts_t[i].Contains(cursor) && reacts_t[j].Contains(cursor) && !isDown)
                 {
                     Round.Merge(i, j);
                     break;
                 }
             }
         }
+
 
         if (!fight)
         {
@@ -159,14 +166,15 @@ public class SuperAutoMachines : App
     public void DrawGroup(RectangleF[] react, List<Machine> group, int size, Tuple<int, int> position, int team)
     {
         int X = 0;
-        for (int i = 0; i < size ; i++)
+        // int startIndex = (team == 2) ? size - 1 : 0;
+        // int endIndex = (team == 2) ? -1 : size;
+        // int increment = (team == 2) ? -1 : 1;
+
+        for (int i = 0; i != size ; i+= 1)
         {
             if (i >= group.Count || team == 0)
             {
-                if(team == 1)
-                    reacts_empty[i] = DrawEmpty(new RectangleF(position.Item1 + X, position.Item2, 200, 200), (i+1).ToString(), 1);
-                else
-                    react[i] = DrawEmpty(new RectangleF(position.Item1 + X, position.Item2, 200, 200), (i+1).ToString(), 1);
+                react[i] = DrawEmpty(new RectangleF(position.Item1 + X, position.Item2, 200, 200), (i+1).ToString(), 1);
             }
             else
             {
@@ -209,21 +217,3 @@ public class SuperAutoMachines : App
         
     }
 }
-
-
-
-
-
-// if (rect1.Contains(cursor) && rect2.Contains(cursor) && !isDown)
-//     fundiu = true;
-
-// if (!fundiu)
-// {
-//     // RectangleF location, int attack, int life, int experience, int tier, bool isGraspable, string name, Bitmap image = null
-//     rect1 = DrawPiece(new RectangleF(50, 50, 200, 200), machine01.Attack, machine01.Life, machine01.Experience, machine01.Tier, true, machine01.Name);
-//     rect2 = DrawPiece(new RectangleF(300, 50, 200, 200), 2, 4, 2, 1, true, "CNC");
-// }
-// else
-// {
-//     DrawPiece(new RectangleF(50, 50, 200, 200), 3, 5, 3, 1, true, "CNC");
-// }

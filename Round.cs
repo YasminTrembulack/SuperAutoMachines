@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -85,17 +86,27 @@ class Round
     {
         List<Machine> team = Game.CurrentGame.Team;
 
-        if(team[indexA].Level == 3 || team[indexA].Level == 3 )
+        if(team[indexA].Level == 3 || team[indexB].Level == 3 || team[indexA].Name != team[indexB].Name)
             return;
+
         Machine newMach = team[indexA].Clone();
         newMach.Attack = team[indexA].Attack > team[indexB].Attack ? team[indexA].Attack + 1: team[indexB].Attack + 1;
         newMach.Life = team[indexA].Life > team[indexB].Life ? team[indexA].Life + 1: team[indexB].Life + 1;
         newMach.Experience = team[indexA].Experience + team[indexB].Experience;
-        newMach.Level = newMach.Experience >= 6 ? newMach.Level = 3: newMach.Experience >= 3 ? newMach.Level = 2 : newMach.Level;
+        
+        if (newMach.Experience >= 6)
+            newMach.Level = 3;
+        else if (newMach.Experience >= 3)
+            newMach.Level = 2;
+        else
+            newMach.Level = 1;
 
-        team.Add(newMach);
-        team.RemoveAt(indexA);
-        team.RemoveAt(indexB);
+        int minIndex = Math.Min(indexA, indexB);
+        team[minIndex] = newMach;
+
+        // Remova a máquina no índice maior
+        int maxIndex = Math.Max(indexA, indexB);
+        team.RemoveAt(maxIndex);
     }
 
     public int FightStep()

@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using SuperAutoMachine;
 
 public abstract class App
 {
@@ -158,7 +159,7 @@ public abstract class App
         DrawText(level.ToString(), Color.White, levelRect, 15f);
  
         var tierRect = new RectangleF(rect.X + realWidth / 3, rect.Y + .8f * rect.Height, realWidth / 3, realWidth / 3);
-        DrawText(tier.ToString(), Color.Orange, tierRect, 15f);
+        DrawText(tier.ToString(), Color.Gold, tierRect, 15f);
  
         if (!cursorIn || !isDown)
             return rect;
