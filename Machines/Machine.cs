@@ -17,6 +17,8 @@ public abstract class Machine(int attack, int life, int experience, int level)
     public virtual void Hurt() { }
     public virtual void Death() { }
     public virtual void Sell() { }
+    public virtual void Atk(int index) { }
+
     public virtual Machine Clone() { return new MChaveDeFenda(this.Attack, this.Life, this.Experience, this.Level)
         {
             Name = this.Name,

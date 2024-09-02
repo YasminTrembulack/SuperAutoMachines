@@ -28,8 +28,8 @@ class Round
 
     // FIGHT
     public List<Machine> SaveTeam { get; set; }
-    private Stack<Machine> FTeam = new();
-    private Stack<Machine> FEnemy = new();
+    public Stack<Machine> FTeam = new();
+    public Stack<Machine> FEnemy = new();
     private Game game = Game.CurrentGame;
 
     public Round()
@@ -103,8 +103,6 @@ class Round
 
         int minIndex = Math.Min(indexA, indexB);
         team[minIndex] = newMach;
-
-        // Remova a máquina no índice maior
         int maxIndex = Math.Max(indexA, indexB);
         team.RemoveAt(maxIndex);
     }
@@ -114,10 +112,11 @@ class Round
         if (FTeam.TryPop(out var mach_t) && FEnemy.TryPop(out var mach_e))
         {
             mach_t.Life -= mach_e.Attack;
-            mach_e.Life -= mach_t.Attack;
-            
-            mach_e.Hurt();
             mach_t.Hurt();
+            mach_e.Atk(FEnemy.Count-1);
+            mach_e.Life -= mach_t.Attack;
+            mach_e.Hurt();
+            mach_t.Atk(FTeam.Count-1);
            
             if (mach_e.Life > 0)
                 FEnemy.Push(mach_e); 

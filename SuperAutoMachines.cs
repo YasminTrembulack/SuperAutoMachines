@@ -196,6 +196,7 @@ public class SuperAutoMachines : App
         {
             DrawText("⭐", Color.Gold, new RectangleF(600 + i, 40, 60, 60), 50f);
         }
+        DrawText($"Round: {game.round}", Color.Gold, new RectangleF(750 , 40, 200, 200), 20f);
     }
     public void DrawButtons()
     {

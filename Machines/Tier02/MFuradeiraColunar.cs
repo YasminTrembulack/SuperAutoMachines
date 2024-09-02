@@ -17,4 +17,11 @@ class MFuradeiraColunar : Machine
             Image = this.Image
         };
     }
+
+    public override void Atk(int index)
+    {
+        if(index == 0)
+            return;
+        // rOU.CurrentGame.Team[index-1].Life--;
+    }
 }
